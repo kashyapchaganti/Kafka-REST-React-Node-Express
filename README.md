@@ -44,3 +44,33 @@ http://localhost:3000/
 ```
 
 
+### Frontend Instructions
+
+```
+$ npm install
+
+```
+
+```
+$ npm run dev
+
+```
+
+Access the following URL to retrieve the last consumed message:
+```
+http://localhost:5174/
+
+```
+
+## Kafkaproducer Instructions
+
+```
+$ npm install
+
+```
+
+```
+$ node producer.js
+
+```
+
