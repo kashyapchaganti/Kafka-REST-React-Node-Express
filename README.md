@@ -1,6 +1,6 @@
 # Kafka-REST-React-Node-Express
 
- An application that utilizes REST API, Kafka, and React. It consists of a backend server written in Express.js for consuming Kafka messages from topics and a frontend React component for displaying the consumed messages.
+ A Real Time application that utilizes REST API, Kafka, and React. It consists of a backend server written in Express.js for consuming Kafka messages from topics and a frontend React component for displaying the consumed messages.
 
  ## Prerequisites
 - Node.js
@@ -79,4 +79,9 @@ $ npm install
 $ node producer.js
 
 ```
+
+
+
+
+
 
