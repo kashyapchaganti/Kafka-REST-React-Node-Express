@@ -25,7 +25,7 @@ So, how do we combine the incoming stream with the chart to plot event data in r
 
 In this experiment, we will use Fusion Charts and ECharts to directly plot streaming data from Kafka topics onto a browser.
 
-- Theory:
+### Theory:
 There are two main approaches to solving this problem:
 
 - Refresh the chart at set intervals to fetch the latest event data from the server. Each interval involves fetching historical data. However, this approach faces challenges in selecting the appropriate interval. If it is too short, it results in unnecessary frequent calls to the server. If it is too long, the chart is no longer truly real-time.
