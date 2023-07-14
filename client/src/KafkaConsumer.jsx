@@ -14,7 +14,14 @@ const MessageTable = () => {
     try {
       const response = await fetch(`http://localhost:3000/?key=${key}`);
       const data = await response.json();
-      setMessages(data);
+
+      // Convert timestamp to UTC
+      const convertedData = data.map(message => {
+        const timestamp = new Date(parseInt(message.timestamp)).toUTCString();
+        return { ...message, timestamp };
+      });
+
+      setMessages(convertedData);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
