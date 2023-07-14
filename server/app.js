@@ -4,6 +4,8 @@ const { Kafka } = require('kafkajs');
 const kafkaHost = 'localhost:9092'; // Replace with your Kafka broker address and port
 const topic = 'topic-one'; // Replace with the name of the Kafka topic you want to consume
 const cors = require('cors');
+app.use(cors());
+
 const kafka = new Kafka({
   clientId: 'your_client_id',
   brokers: [kafkaHost],
@@ -12,7 +14,7 @@ const kafka = new Kafka({
 const consumer = kafka.consumer({ groupId: 'your_consumer_group_id' });
 
 let lastMessage = null;
-app.use(cors());
+
 const fetchAllPartitions = async () => {
   const admin = kafka.admin();
   await admin.connect();
@@ -40,7 +42,6 @@ const runConsumer = async () => {
         topic,
         key: message.key !== null ? message.key.toString() : null,
         value: message.value !== null ? message.value.toString() : null,
-        partition
       };
     },
   });

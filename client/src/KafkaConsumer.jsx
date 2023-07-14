@@ -30,7 +30,7 @@ export default function KafkaConsumer() {
 //   });
     useEffect(()=>{
         fetchApi();
-    },[])
+    })
 
     async function fetchApi(){
         const response = await fetch(RANDOMURL);
