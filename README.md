@@ -64,6 +64,12 @@ http://localhost:5174/
 
 ## Kafkaproducer Instructions
 
+-- start zookeeper server / or use kraft
+-- start kafka server 
+-- create a topic of your choice and assign partitions and replication factors 
+-- start kafka console consumer to crosscheck the data that is flowing to your react app 
+
+
 ```
 $ npm install
 
