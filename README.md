@@ -17,11 +17,24 @@
 
 - Operational Monitoring and Analytics: Real-time visualization with Kafka can be employed for operational monitoring and analytics in various industries. For instance, in a manufacturing plant, data from sensors and equipment can be streamed into Kafka, and real-time visualization tools can create dashboards and charts to monitor production metrics, machine performance, and identify anomalies or bottlenecks. This allows operators to take immediate action and optimize processes.
 
- ## Prerequisites
-- Node.js
-- React.js 
-- Kafka (Topics, producer, consumer, broker, kraft, server basics) 
-- CORS support (enabled by default in the backend server)
+## How challenging is it to render high-speed real-time charts?
+
+The field of collecting and storing event data in streams is vast, with various methods available such as Apache Kafka, Confluent's cloud, Azure Event Hub, AWS Kinesis Data Streams, and more. Similarly, there are numerous open-source charting libraries to choose from. However, plotting a real-time chart from these streams can be challenging due to the high speed at which data is collected from different sources.
+
+So, how do we combine the incoming stream with the chart to plot event data in real time?
+
+In this experiment, we will use Fusion Charts and ECharts to directly plot streaming data from Kafka topics onto a browser.
+
+- Theory:
+There are two main approaches to solving this problem:
+
+- Refresh the chart at set intervals to fetch the latest event data from the server. Each interval involves fetching historical data. However, this approach faces challenges in selecting the appropriate interval. If it is too short, it results in unnecessary frequent calls to the server. If it is too long, the chart is no longer truly real-time.
+
+- Establish a socket connection between the API server and the browser for real-time and event-based communication. The server emits events to the socket, which are captured by the browser and added to the chart.
+
+Approach:
+The second approach, using sockets, is the most practical. Therefore, we will focus on explaining this approach. The charts showcased in the video above plot 10 data points per second.
+
 
 ## Backend
 The backend server is responsible for consuming messages from a Kafka topic and exposing an API endpoint to retrieve the last consumed message. It uses the kafkajs library for interacting with Kafka.
