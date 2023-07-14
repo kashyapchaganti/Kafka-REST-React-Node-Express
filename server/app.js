@@ -42,6 +42,7 @@ const runConsumer = async () => {
         topic,
         key: message.key !== null ? message.key.toString() : null,
         value: message.value !== null ? message.value.toString() : null,
+        partition,timestamp: message.timestamp
       };
     },
   });

@@ -26,7 +26,7 @@ const produceMessage = async () => {
 const run = async () => {
   // Producing
   await producer.connect()
-  setInterval(produceMessage, 1000
+  setInterval(produceMessage, 10000
     )
 
   // Consuming
