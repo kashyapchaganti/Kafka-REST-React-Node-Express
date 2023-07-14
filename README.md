@@ -2,6 +2,21 @@
 
  A Real Time application that utilizes REST API, Kafka, and React. It consists of a backend server written in Express.js for consuming Kafka messages from topics and a frontend React component for displaying the consumed messages.
 
+## Tech Stack
+
+- Kafka
+- Node
+- ReactJS
+
+## Introduction 
+- So, what is the importance of real-time data visualization? I will give you 3 examples from different domains where analyzing high speed real time data is crucial.
+
+- Financial Services: Real-time visualization with Kafka can be valuable in the financial services industry. For example, stock market data feeds can be streamed into Kafka topics, and real-time visualization tools can process and display this data in a visually appealing and informative manner. Traders and analysts can monitor stock prices, trends, and other relevant metrics in real time, enabling them to make informed decisions quickly.
+
+- Internet of Things (IoT): The IoT generates a massive amount of data from various devices and sensors. Kafka is commonly used as a messaging system to collect, process, and distribute IoT data streams. Real-time visualization tools can consume these Kafka topics and provide visual insights into the status, performance, and patterns of IoT devices. This can be particularly useful in industrial IoT applications, smart cities, and monitoring systems.
+
+- Operational Monitoring and Analytics: Real-time visualization with Kafka can be employed for operational monitoring and analytics in various industries. For instance, in a manufacturing plant, data from sensors and equipment can be streamed into Kafka, and real-time visualization tools can create dashboards and charts to monitor production metrics, machine performance, and identify anomalies or bottlenecks. This allows operators to take immediate action and optimize processes.
+
  ## Prerequisites
 - Node.js
 - React.js 
