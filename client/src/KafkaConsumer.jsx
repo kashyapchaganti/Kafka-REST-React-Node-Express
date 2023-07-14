@@ -1,175 +1,66 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// // import 'bootstrap/dist/css/bootstrap.min.css';
-// import { Container, Row, Col } from 'react-bootstrap';
-// const RANDOMURL= "http://localhost:3000/"
-// export default function KafkaConsumer() {
-//   const [message, setMessage] = useState(null);
-
-
-//     useEffect(()=>{
-//         fetchApi();
-//     })
-
-//     async function fetchApi(){
-//         const response = await fetch(RANDOMURL);
-//     const jsonResponse = await response.json();
-    
-//     setMessage(jsonResponse)
-//     }
-
-//   return (
-//     <Container className="mt-5">
-//       <Row>
-//         <Col>
-//           <h1>Topic Name</h1>
-//           <p>{message && message.topic}</p>
-//         </Col>
-//       </Row>
-//       <Row>
-//         <Col>
-//           <h2>Key</h2>
-//           <p>{message && message.key}</p>
-//         </Col>
-//       </Row>
-//       <Row>
-//         <Col>
-//           <h3>Value</h3>
-//           <p>{message && message.value}</p>
-//         </Col>
-//       </Row>
-//     </Container>
-//   );
-// }
-
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// // import 'bootstrap/dist/css/bootstrap.min.css';
-// import { Container, Row, Col, Table } from 'react-bootstrap';
-
-// const RANDOMURL = "http://localhost:3000/";
-
-// export default function KafkaConsumer() {
-//   const [messageMap, setMessageMap] = useState(new Map());
-
-//   useEffect(() => {
-//     fetchApi();
-//   });
-
-//   async function fetchApi() {
-//     try {
-//       const response = await axios.get(RANDOMURL);
-//       const message = response.data;
-
-//       if (message.key !== null) {
-//         setMessageMap(prevMap => {
-//           const updatedMap = new Map(prevMap);
-//           updatedMap.set(message.key, message.value);
-//           return updatedMap;
-//         });
-//       }
-//     } catch (error) {
-//       console.error("Error fetching API:", error);
-//     }
-//   }
-
-//   return (
-//     <Container className="mt-5">
-//       <Table striped bordered>
-//         <thead>
-//           <tr>
-          
-//             <th>Key</th>
-//             <th>Topic Name</th>
-//             <th>Value</th>
-            
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {Array.from({ length: 10 }, (_, index) => {
-//             const key = (index + 1).toString();
-//             const value = messageMap.get(key);
-//             console.log(messageMap)
-
-//             return (
-//               <tr key={key}>
-                
-//                 <td>{key}</td>
-//                 <td>topic-one</td>
-//                 <td>{value}</td>
-                
-//               </tr>
-//             );
-//           })}
-//         </tbody>
-//       </Table>
-//     </Container>
-//   );
-// }
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Table } from 'react-bootstrap';
 
-const RANDOMURL = "http://localhost:3000/";
-
-export default function KafkaConsumer() {
-  const [messageMap, setMessageMap] = useState(new Map());
+const MessageTable = () => {
+  const [messages, setMessages] = useState([]);
+  const [selectedKey, setSelectedKey] = useState('');
 
   useEffect(() => {
-    fetchApi();
+    if (selectedKey) {
+      fetchMessages(selectedKey);
+    }
   });
 
-  async function fetchApi() {
+  const fetchMessages = async (key) => {
     try {
-      const response = await axios.get(RANDOMURL);
-      const message = response.data;
-
-      if (message.key !== null) {
-        setMessageMap(prevMap => {
-          const updatedMap = new Map(prevMap);
-          updatedMap.set(message.key, {
-            topic: message.topic,
-            value: message.value,
-            partition: message.partition, timestamp: new Date(Number(message.timestamp)).toLocaleString('en-US', { timeZone: 'UTC' })
-          });
-          return updatedMap;
-        });
-      }
+      const response = await fetch(`http://localhost:3000/?key=${key}`);
+      const data = await response.json();
+      setMessages(data);
     } catch (error) {
-      console.error("Error fetching API:", error);
+      console.error('Error fetching messages:', error);
     }
-  }
+  };
+
+  const handleKeyChange = (event) => {
+    setSelectedKey(event.target.value);
+  };
 
   return (
-    <Container className="mt-5">
-      <Table striped bordered>
+    <div>
+      <label htmlFor="key">Key:</label>
+      <select id="key" value={selectedKey} onChange={handleKeyChange}>
+        <option value="">Select a key</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+
+      <table>
         <thead>
           <tr>
             <th>Key</th>
-            <th>Topic Name</th>
             <th>Value</th>
-            <th>Partition</th>
             <th>Timestamp</th>
           </tr>
         </thead>
         <tbody>
-          {Array.from({ length: 10 }, (_, index) => {
-            const key = (index + 1).toString();
-            const message = messageMap.get(key);
-
-            return (
-              <tr key={key}>
-                <td>{key}</td>
-                <td>{message ? message.topic : ''}</td>
-                <td>{message ? message.value : ''}</td>
-                <td>{message ? message.partition : ''}</td>
-                <td>{message ? message.timestamp : ''}</td>
-              </tr>
-            );
-          })}
+          {messages.map((message, index) => (
+            <tr key={index}>
+              <td>{message.key}</td>
+              <td>{message.value}</td>
+              <td>{message.timestamp}</td>
+            </tr>
+          ))}
         </tbody>
-      </Table>
-    </Container>
+      </table>
+    </div>
   );
-}
+};
+
+export default MessageTable;

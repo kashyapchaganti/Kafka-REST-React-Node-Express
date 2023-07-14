@@ -13,7 +13,7 @@ const kafka = new Kafka({
 
 const consumer = kafka.consumer({ groupId: 'your_consumer_group_id' });
 
-let lastMessage = null;
+const lastMessages = {};
 
 const fetchAllPartitions = async () => {
   const admin = kafka.admin();
@@ -27,6 +27,22 @@ const fetchAllPartitions = async () => {
   return partitionMetadata.map(partition => partition.partitionId);
 };
 
+const updateLastMessage = ({ topic, partition, message }) => {
+  const key = message.key !== null ? message.key.toString() : null;
+  const value = message.value !== null ? message.value.toString() : null;
+  const timestamp = message.timestamp;
+
+  if (!lastMessages[key]) {
+    lastMessages[key] = [];
+  }
+
+  if (lastMessages[key].length === 5) {
+    lastMessages[key].shift(); // Remove the oldest message
+  }
+
+  lastMessages[key].push({ topic, key, value, partition, timestamp });
+};
+
 const runConsumer = async () => {
   await consumer.connect();
   const partitions = await fetchAllPartitions();
@@ -38,12 +54,7 @@ const runConsumer = async () => {
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       console.log('Received message:', message);
-      lastMessage = {
-        topic,
-        key: message.key !== null ? message.key.toString() : null,
-        value: message.value !== null ? message.value.toString() : null,
-        partition,timestamp: message.timestamp
-      };
+      updateLastMessage({ topic, partition, message });
     },
   });
 };
@@ -53,13 +64,16 @@ runConsumer().catch(error => {
 });
 
 app.get('/', (req, res) => {
-  if (lastMessage) {
-    res.json(lastMessage);
+  const key = req.query.key; // Get the key from the frontend
+
+  if (lastMessages[key]) {
+    res.json(lastMessages[key]);
   } else {
-    res.send('No Kafka message received yet.');
+    res.json([]);
   }
 });
 
 app.listen(3000, () => {
   console.log('Listening on port 3000');
 });
+
